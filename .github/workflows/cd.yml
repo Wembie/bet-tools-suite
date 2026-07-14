@@ -1,0 +1,123 @@
+name: CD — Bet Recovery Calculator
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # ── 1. Tag — si VERSION cambió, crear tag v{VERSION} ──────────────────────────
+  tag:
+    name: Create git tag
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      version: ${{ steps.ver.outputs.version }}
+      tagged: ${{ steps.ver.outputs.changed }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check if VERSION changed
+        id: ver
+        run: |
+          if git diff HEAD~1 HEAD -- VERSION | grep -q '^+[^+]'; then
+            VERSION="$(cat VERSION | tr -d '[:space:]')"
+            echo "changed=true"  >> $GITHUB_OUTPUT
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+            echo "version=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create and push tag
+        if: steps.ver.outputs.changed == 'true'
+        run: |
+          TAG="v${{ steps.ver.outputs.version }}"
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --tags origin | grep -q "refs/tags/${TAG}$"; then
+            echo "Tag ${TAG} ya existe — omitiendo."
+          else
+            git tag -a "${TAG}" -m "Release ${TAG}"
+            git push origin "${TAG}"
+            echo "Tag ${TAG} creado."
+          fi
+
+  # ── 2. Test & Build ───────────────────────────────────────────────────────────
+  build:
+    name: Test & Build
+    needs: tag
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test -- --run
+
+      - name: Build
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  # ── 3. Deploy — GitHub Pages ──────────────────────────────────────────────────
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # ── 4. Release — publicar GitHub Release si VERSION cambió ────────────────────
+  release:
+    name: Publish GitHub Release
+    needs: [tag, deploy]
+    if: needs.tag.outputs.tagged == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ needs.tag.outputs.version }}
+          name: Bet Recovery Calculator v${{ needs.tag.outputs.version }}
+          generate_release_notes: true

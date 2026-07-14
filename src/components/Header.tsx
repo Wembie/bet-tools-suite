@@ -19,7 +19,12 @@ export function Header({ settings, onThemeToggle, onSettingsOpen }: HeaderProps)
             <TrendingUp className="h-5 w-5 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-base font-semibold tracking-tight">{APP_NAME}</h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-base font-semibold tracking-tight">{APP_NAME}</h1>
+              <span className="hidden sm:inline-flex items-center rounded-full border border-border/60 px-2 py-0.5 text-[10px] font-mono text-muted-foreground">
+                v{__APP_VERSION__}
+              </span>
+            </div>
             <p className="text-xs text-muted-foreground hidden sm:block">
               Mathematical recovery betting calculator
             </p>

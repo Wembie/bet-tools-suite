@@ -1,0 +1,51 @@
+name: CI — Bet Recovery Calculator
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  ci:
+    name: Validate & Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure VERSION was bumped
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          BASE_VERSION="$(git show "${{ github.event.pull_request.base.sha }}:VERSION")"
+          HEAD_VERSION="$(git show "${{ github.event.pull_request.head.sha }}:VERSION")"
+          if [ "$BASE_VERSION" = "$HEAD_VERSION" ]; then
+            echo "::error::VERSION no cambió. Actualiza VERSION antes de hacer merge."
+            exit 1
+          fi
+          echo "VERSION: $BASE_VERSION → $HEAD_VERSION"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check
+        run: npx tsc -b --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Run tests
+        run: npm test -- --run
+
+      - name: Build
+        run: npm run build

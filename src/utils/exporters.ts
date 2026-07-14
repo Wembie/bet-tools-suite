@@ -1,6 +1,6 @@
 import type { CalculationResult, AppSettings } from '@/types'
 import { formatCurrency, formatPercent } from './formatters'
-import { APP_NAME, APP_VERSION } from '@/constants'
+import { APP_NAME } from '@/constants'
 
 export function exportCSV(result: CalculationResult, _settings: AppSettings): void {
   const headers = [
@@ -93,7 +93,7 @@ export async function exportPDF(
   doc.text(APP_NAME, 10, 13)
   doc.setFontSize(9)
   doc.setFont('helvetica', 'normal')
-  doc.text(`v${APP_VERSION} — Generated: ${now}`, pageWidth - 10, 13, { align: 'right' })
+  doc.text(`v${__APP_VERSION__} — Generated: ${now}`, pageWidth - 10, 13, { align: 'right' })
 
   // Summary cards
   doc.setTextColor(15, 23, 42)

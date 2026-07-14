@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
-import { TrendingUp, Github, Moon, Sun, Settings, Home } from 'lucide-react'
+import { TrendingUp, Github, Moon, Sun, Settings, Home, Languages } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import type { AppSettings } from '@/types'
 import { APP_NAME, GITHUB_URL } from '@/constants'
@@ -12,6 +13,12 @@ interface HeaderProps {
 }
 
 export function Header({ settings, onThemeToggle, onSettingsOpen, onHome }: HeaderProps) {
+  const { t, i18n } = useTranslation()
+
+  function toggleLanguage() {
+    i18n.changeLanguage(i18n.language === 'en' ? 'es' : 'en')
+  }
+
   return (
     <motion.header
       initial={{ y: -20, opacity: 0 }}
@@ -31,7 +38,7 @@ export function Header({ settings, onThemeToggle, onSettingsOpen, onHome }: Head
                   <Home className="h-4 w-4" />
                 </button>
               </TooltipTrigger>
-              <TooltipContent>Back to home</TooltipContent>
+              <TooltipContent>{t('header.backHome')}</TooltipContent>
             </Tooltip>
           )}
           <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-gold glow-gold-sm shrink-0">
@@ -45,7 +52,7 @@ export function Header({ settings, onThemeToggle, onSettingsOpen, onHome }: Head
               </span>
             </div>
             <p className="text-[11px] text-white/30 hidden sm:block">
-              Recovery betting calculator
+              {t('header.subtitle')}
             </p>
           </div>
         </div>
@@ -62,7 +69,20 @@ export function Header({ settings, onThemeToggle, onSettingsOpen, onHome }: Head
                 <Github className="h-4 w-4" />
               </a>
             </TooltipTrigger>
-            <TooltipContent>GitHub</TooltipContent>
+            <TooltipContent>{t('header.github')}</TooltipContent>
+          </Tooltip>
+
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <button
+                onClick={toggleLanguage}
+                className="flex items-center justify-center gap-1 h-9 px-2 rounded-lg text-white/30 hover:text-white/70 hover:bg-white/5 transition-all text-[10px] font-bold uppercase tracking-wider"
+              >
+                <Languages className="h-3.5 w-3.5" />
+                <span className="hidden sm:inline">{t('header.switchLanguage')}</span>
+              </button>
+            </TooltipTrigger>
+            <TooltipContent>{t('header.switchLanguage')}</TooltipContent>
           </Tooltip>
 
           <Tooltip>
@@ -74,7 +94,7 @@ export function Header({ settings, onThemeToggle, onSettingsOpen, onHome }: Head
                 {settings.theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               </button>
             </TooltipTrigger>
-            <TooltipContent>Toggle theme</TooltipContent>
+            <TooltipContent>{t('header.toggleTheme')}</TooltipContent>
           </Tooltip>
 
           <Tooltip>
@@ -86,7 +106,7 @@ export function Header({ settings, onThemeToggle, onSettingsOpen, onHome }: Head
                 <Settings className="h-4 w-4" />
               </button>
             </TooltipTrigger>
-            <TooltipContent>Settings</TooltipContent>
+            <TooltipContent>{t('header.settings')}</TooltipContent>
           </Tooltip>
         </div>
       </div>

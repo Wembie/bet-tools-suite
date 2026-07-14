@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { Shield, Layers, Zap } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 interface LandingProps {
   onSelectMode: (mode: 'recovery' | 'escalera') => void
@@ -49,21 +50,23 @@ const SUITS = [
   { char: '♣', pos: { top: '82%', left: '30%' }, size: 42, opacity: 0.035 },
 ]
 
-const RECOVERY_FEATURES = [
-  'Auto stake calculation per loss',
-  'Fixed profit on any win',
-  'Up to 50 attempt planning',
-  'CSV / Excel / PDF export',
-]
-
-const ESCALERA_FEATURES = [
-  'Compound reinvestment plan',
-  'Bet-by-bet growth tracking',
-  'Exponential return projection',
-  'Up to 365 bets support',
-]
-
 export function Landing({ onSelectMode }: LandingProps) {
+  const { t } = useTranslation()
+
+  const recoveryFeatures = [
+    t('landing.recoveryF1'),
+    t('landing.recoveryF2'),
+    t('landing.recoveryF3'),
+    t('landing.recoveryF4'),
+  ]
+
+  const escaleraFeatures = [
+    t('landing.escF1'),
+    t('landing.escF2'),
+    t('landing.escF3'),
+    t('landing.escF4'),
+  ]
+
   return (
     <div className="min-h-screen bg-[#06060f] flex flex-col overflow-hidden relative">
       {/* Ambient glow */}
@@ -113,7 +116,7 @@ export function Landing({ onSelectMode }: LandingProps) {
           <div className="w-8 h-8 rounded-xl bg-gradient-gold flex items-center justify-center shadow-gold-sm">
             <Zap className="h-4 w-4 text-black" />
           </div>
-          <span className="text-sm font-black text-white tracking-wide">BET RECOVERY</span>
+          <span className="text-sm font-black text-white tracking-wide">BET TOOLS</span>
           <span className="text-[9px] px-1.5 py-0.5 rounded-full border border-amber-500/25 text-amber-400/60 font-mono">
             v{__APP_VERSION__}
           </span>
@@ -134,7 +137,7 @@ export function Landing({ onSelectMode }: LandingProps) {
           className="flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/8 border border-amber-500/18 text-amber-300/65 text-[10px] font-bold uppercase tracking-widest mb-8"
         >
           <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse" />
-          Professional Betting Tools · Free
+          {t('landing.tagline')}
         </motion.div>
 
         {/* Headline */}
@@ -145,9 +148,9 @@ export function Landing({ onSelectMode }: LandingProps) {
           className="text-center mb-4"
         >
           <h1 className="text-5xl md:text-7xl lg:text-[90px] font-black leading-none tracking-tighter">
-            <span className="text-white">CALCULATE</span>
+            <span className="text-white">{t('landing.headline1')}</span>
             <br />
-            <span className="text-gradient-gold animate-gradient-x">YOUR WIN</span>
+            <span className="text-gradient-gold animate-gradient-x">{t('landing.headline2')}</span>
           </h1>
         </motion.div>
 
@@ -157,7 +160,7 @@ export function Landing({ onSelectMode }: LandingProps) {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="text-white/30 text-sm md:text-base text-center max-w-sm leading-relaxed mb-14"
         >
-          Choose your strategy. Calculate your next move. Play smarter.
+          {t('landing.subtitle')}
         </motion.p>
 
         {/* ── MODE CARDS ── */}
@@ -182,13 +185,12 @@ export function Landing({ onSelectMode }: LandingProps) {
               el.closest?.('.group')?.setAttribute('style', '')
             }}
           >
-            {/* Top highlight */}
             <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-amber-400/50 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-br from-white/[0.025] to-transparent pointer-events-none" />
 
             <div className="relative p-7 md:p-8">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/22 text-amber-400/75 text-[9px] font-black uppercase tracking-widest mb-5">
-                🎲 RECOVERY SYSTEM
+                {t('landing.recoveryBadge')}
               </span>
 
               <div className="w-12 h-12 rounded-xl bg-amber-500/12 border border-amber-500/22 flex items-center justify-center mb-4 group-hover:shadow-[0_0_25px_rgba(245,158,11,0.3)] transition-all duration-300">
@@ -196,16 +198,16 @@ export function Landing({ onSelectMode }: LandingProps) {
               </div>
 
               <h2 className="text-2xl md:text-3xl font-black text-white leading-tight mb-3">
-                MARTINGALE<br />
-                <span className="text-gradient-gold">RECOVERY</span>
+                {t('landing.recoveryTag1')}<br />
+                <span className="text-gradient-gold">{t('landing.recoveryTag2')}</span>
               </h2>
 
               <p className="text-white/35 text-xs md:text-sm leading-relaxed mb-5">
-                Lost a bet? Calculate the exact stake to recover all your losses plus a fixed profit — in a single win.
+                {t('landing.recoveryDesc')}
               </p>
 
               <ul className="space-y-1.5 mb-7">
-                {RECOVERY_FEATURES.map(f => (
+                {recoveryFeatures.map(f => (
                   <li key={f} className="flex items-center gap-2 text-[11px] text-white/45">
                     <span className="w-1 h-1 rounded-full bg-amber-400/55 shrink-0" />
                     {f}
@@ -215,7 +217,7 @@ export function Landing({ onSelectMode }: LandingProps) {
 
               <div className="h-11 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 text-black font-black text-sm flex items-center justify-center gap-2 shadow-gold group-hover:shadow-[0_4px_28px_rgba(245,158,11,0.5)] transition-all duration-300">
                 <Zap className="h-4 w-4" />
-                ENTER RECOVERY
+                {t('landing.recoveryEnter')}
               </div>
             </div>
           </motion.div>
@@ -235,7 +237,7 @@ export function Landing({ onSelectMode }: LandingProps) {
 
             <div className="relative p-7 md:p-8">
               <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-purple-500/10 border border-purple-500/22 text-purple-400/75 text-[9px] font-black uppercase tracking-widest mb-5">
-                📈 COMPOUND GROWTH
+                {t('landing.escBadge')}
               </span>
 
               <div className="w-12 h-12 rounded-xl bg-purple-500/12 border border-purple-500/22 flex items-center justify-center mb-4 group-hover:shadow-[0_0_25px_rgba(168,85,247,0.3)] transition-all duration-300">
@@ -243,16 +245,16 @@ export function Landing({ onSelectMode }: LandingProps) {
               </div>
 
               <h2 className="text-2xl md:text-3xl font-black text-white leading-tight mb-3">
-                RETO<br />
-                <span className="bg-gradient-to-r from-purple-400 to-violet-300 bg-clip-text text-transparent">ESCALERA</span>
+                {t('landing.escTag1')}<br />
+                <span className="bg-gradient-to-r from-purple-400 to-violet-300 bg-clip-text text-transparent">{t('landing.escTag2')}</span>
               </h2>
 
               <p className="text-white/35 text-xs md:text-sm leading-relaxed mb-5">
-                Reinvest every win and let compound growth do the work. See the full potential of your bankroll bet by bet.
+                {t('landing.escDesc')}
               </p>
 
               <ul className="space-y-1.5 mb-7">
-                {ESCALERA_FEATURES.map(f => (
+                {escaleraFeatures.map(f => (
                   <li key={f} className="flex items-center gap-2 text-[11px] text-white/45">
                     <span className="w-1 h-1 rounded-full bg-purple-400/55 shrink-0" />
                     {f}
@@ -262,7 +264,7 @@ export function Landing({ onSelectMode }: LandingProps) {
 
               <div className="h-11 rounded-xl bg-gradient-to-r from-purple-600 to-violet-500 text-white font-black text-sm flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(168,85,247,0.3)] group-hover:shadow-[0_4px_28px_rgba(168,85,247,0.5)] transition-all duration-300">
                 <Layers className="h-4 w-4" />
-                START CHALLENGE
+                {t('landing.escEnter')}
               </div>
             </div>
           </motion.div>
@@ -275,7 +277,7 @@ export function Landing({ onSelectMode }: LandingProps) {
           transition={{ duration: 0.6, delay: 0.7 }}
           className="mt-10 text-[10px] text-white/12 text-center uppercase tracking-widest"
         >
-          For educational purposes only · Bet responsibly
+          {t('landing.disclaimer')}
         </motion.p>
       </div>
     </div>

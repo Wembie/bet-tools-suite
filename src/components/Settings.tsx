@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { X, Palette, DollarSign, Bell } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { AppSettings, Currency, ThousandsSeparator, DecimalPlaces } from '@/types'
 
 interface SettingsProps {
@@ -75,6 +76,8 @@ function SectionHeader({ icon: Icon, label }: { icon: React.ElementType; label: 
 }
 
 export function Settings({ settings, onUpdate, onClose }: SettingsProps) {
+  const { t } = useTranslation()
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -93,8 +96,8 @@ export function Settings({ settings, onUpdate, onClose }: SettingsProps) {
         {/* Header */}
         <div className="px-6 py-5 border-b border-white/5 flex items-center justify-between">
           <div>
-            <h2 className="text-base font-bold text-white">Settings</h2>
-            <p className="text-[10px] uppercase tracking-widest text-amber-400/50 mt-0.5">Preferences</p>
+            <h2 className="text-base font-bold text-white">{t('settings.title')}</h2>
+            <p className="text-[10px] uppercase tracking-widest text-amber-400/50 mt-0.5">{t('settings.preferences')}</p>
           </div>
           <button
             onClick={onClose}
@@ -107,8 +110,8 @@ export function Settings({ settings, onUpdate, onClose }: SettingsProps) {
         <div className="px-6 py-5 space-y-6 max-h-[70vh] overflow-y-auto">
           {/* Appearance */}
           <div className="space-y-4">
-            <SectionHeader icon={Palette} label="Appearance" />
-            <SettingRow label="Dark Mode" sub="Toggle light/dark theme">
+            <SectionHeader icon={Palette} label={t('settings.appearance')} />
+            <SettingRow label={t('settings.darkMode')} sub={t('settings.darkModeHint')}>
               <Toggle
                 checked={settings.theme === 'dark'}
                 onChange={v => onUpdate({ theme: v ? 'dark' : 'light' })}
@@ -118,39 +121,39 @@ export function Settings({ settings, onUpdate, onClose }: SettingsProps) {
 
           {/* Currency */}
           <div className="space-y-4">
-            <SectionHeader icon={DollarSign} label="Currency" />
-            <SettingRow label="Currency" sub="Symbol and format">
+            <SectionHeader icon={DollarSign} label={t('settings.currency')} />
+            <SettingRow label={t('settings.currency')} sub={t('settings.currencyHint')}>
               <DarkSelect<Currency>
                 value={settings.currency}
                 onChange={v => onUpdate({ currency: v })}
                 options={[
-                  { value: 'USD', label: 'USD — US Dollar ($)' },
-                  { value: 'EUR', label: 'EUR — Euro (€)' },
-                  { value: 'COP', label: 'COP — Colombian Peso' },
-                  { value: 'MXN', label: 'MXN — Mexican Peso' },
+                  { value: 'USD', label: t('settings.usd') },
+                  { value: 'EUR', label: t('settings.eur') },
+                  { value: 'COP', label: t('settings.cop') },
+                  { value: 'MXN', label: t('settings.mxn') },
                 ]}
               />
             </SettingRow>
-            <SettingRow label="Thousands Separator" sub="Number format">
+            <SettingRow label={t('settings.thousandsSeparator')} sub={t('settings.thousandsSeparatorHint')}>
               <DarkSelect<ThousandsSeparator>
                 value={settings.thousandsSeparator}
                 onChange={v => onUpdate({ thousandsSeparator: v })}
                 options={[
-                  { value: ',', label: 'Comma (1,000,000)' },
-                  { value: '.', label: 'Period (1.000.000)' },
-                  { value: ' ', label: 'Space (1 000 000)' },
+                  { value: ',', label: t('settings.comma') },
+                  { value: '.', label: t('settings.period') },
+                  { value: ' ', label: t('settings.space') },
                 ]}
               />
             </SettingRow>
-            <SettingRow label="Decimal Places" sub="Precision">
+            <SettingRow label={t('settings.decimalPlaces')} sub={t('settings.decimalPlacesHint')}>
               <DarkSelect<string>
                 value={String(settings.decimalPlaces)}
                 onChange={v => onUpdate({ decimalPlaces: Number(v) as DecimalPlaces })}
                 options={[
-                  { value: '0', label: '0 — No decimals' },
-                  { value: '1', label: '1 — One decimal' },
-                  { value: '2', label: '2 — Two decimals' },
-                  { value: '4', label: '4 — Four decimals' },
+                  { value: '0', label: t('settings.dec0') },
+                  { value: '1', label: t('settings.dec1') },
+                  { value: '2', label: t('settings.dec2') },
+                  { value: '4', label: t('settings.dec4') },
                 ]}
               />
             </SettingRow>
@@ -158,15 +161,15 @@ export function Settings({ settings, onUpdate, onClose }: SettingsProps) {
 
           {/* Alerts */}
           <div className="space-y-4">
-            <SectionHeader icon={Bell} label="Alert Thresholds" />
+            <SectionHeader icon={Bell} label={t('settings.alertThresholds')} />
             <div className="grid grid-cols-3 gap-3">
               {[
-                { label: 'Max Stake', key: 'maxStakeAlert' as const, value: settings.maxStakeAlert },
-                { label: 'Max Capital', key: 'maxCapitalAlert' as const, value: settings.maxCapitalAlert },
-                { label: 'Max Attempts', key: 'maxAttemptsAlert' as const, value: settings.maxAttemptsAlert },
-              ].map(({ label, key, value }) => (
+                { labelKey: 'settings.maxStake', key: 'maxStakeAlert' as const, value: settings.maxStakeAlert },
+                { labelKey: 'settings.maxCapital', key: 'maxCapitalAlert' as const, value: settings.maxCapitalAlert },
+                { labelKey: 'settings.maxAttempts', key: 'maxAttemptsAlert' as const, value: settings.maxAttemptsAlert },
+              ].map(({ labelKey, key, value }) => (
                 <div key={key} className="space-y-1.5">
-                  <label className="text-[10px] uppercase tracking-widest text-white/30 font-semibold">{label}</label>
+                  <label className="text-[10px] uppercase tracking-widest text-white/30 font-semibold">{t(labelKey)}</label>
                   <input
                     type="number"
                     value={value}
@@ -177,7 +180,7 @@ export function Settings({ settings, onUpdate, onClose }: SettingsProps) {
               ))}
             </div>
             <p className="text-[10px] text-white/20 leading-relaxed">
-              Alerts show in the results panel when thresholds are exceeded.
+              {t('settings.thresholdsNote')}
             </p>
           </div>
         </div>
@@ -188,7 +191,7 @@ export function Settings({ settings, onUpdate, onClose }: SettingsProps) {
             onClick={onClose}
             className="h-9 px-5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-400 text-black text-sm font-bold shadow-gold-sm hover:shadow-gold transition-all hover:scale-[1.02] active:scale-[0.98]"
           >
-            Done
+            {t('settings.done')}
           </button>
         </div>
       </motion.div>

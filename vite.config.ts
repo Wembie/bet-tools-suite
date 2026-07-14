@@ -19,19 +19,13 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          motion: ['framer-motion'],
-          charts: ['recharts'],
-          forms: ['react-hook-form', '@hookform/resolvers', 'zod'],
-          radix: [
-            '@radix-ui/react-dialog',
-            '@radix-ui/react-select',
-            '@radix-ui/react-tabs',
-            '@radix-ui/react-switch',
-            '@radix-ui/react-tooltip',
-            '@radix-ui/react-separator',
-          ],
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return
+          if (id.includes('react-dom') || (id.includes('react') && !id.includes('recharts') && !id.includes('react-hook-form'))) return 'vendor'
+          if (id.includes('framer-motion')) return 'motion'
+          if (id.includes('recharts') || id.includes('d3-') || id.includes('victory-')) return 'charts'
+          if (id.includes('react-hook-form') || id.includes('@hookform') || id.includes('zod')) return 'forms'
+          if (id.includes('@radix-ui')) return 'radix'
         },
       },
     },

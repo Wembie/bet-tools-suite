@@ -68,3 +68,28 @@ export interface AlertInfo {
   type: 'warning' | 'error' | 'info'
   message: string
 }
+
+export interface StaircaseInputs {
+  initialAmount: number
+  odds: number
+  attempts: number
+}
+
+export interface StaircaseRow {
+  attempt: number
+  betAmount: number
+  grossReturn: number
+  profit: number
+  cumulativeProfit: number
+  growthPercent: number
+}
+
+export interface StaircaseResult {
+  rows: StaircaseRow[]
+  initialAmount: number
+  odds: number
+  attempts: number
+  finalAmount: number
+  totalProfit: number
+  totalGrowthPercent: number
+}

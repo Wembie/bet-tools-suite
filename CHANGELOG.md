@@ -5,6 +5,47 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.4] - 2026-07-13
+
+### Changed
+- Renamed repository from `bet-recovery-calculator` to `bet-tools-suite` to reflect multi-tool scope
+- Renamed app from `Bet Recovery Calculator` to `Bet Tools Suite` across all surfaces
+- Updated `vite.config.ts` base path to `/bet-tools-suite/` (fixes GitHub Pages deployment URL)
+- Updated `package.json` and `package-lock.json` name field
+- Updated `APP_NAME` constant, `index.html` title and meta description, README heading and description
+- Updated GitHub URL in constants, README badges, live URL, clone instructions, and CONTRIBUTING setup guide
+- Renamed LocalStorage keys from `bet-recovery-*` to `bet-tools-*` (existing saved history/settings will not migrate automatically)
+- Renamed export filenames from `bet-recovery-*.{csv,xlsx,pdf}` to `bet-tools-*.{csv,xlsx,pdf}`
+- Documented full version history in CHANGELOG (1.0.0 through 1.0.3 entries added)
+
+## [1.0.3] - 2026-07-13
+
+### Changed
+- Full architecture overhaul: Home.tsx is now a clean router between isolated calculator pages
+- Landing redesigned as mode chooser with floating casino chips, card suits, and ambient glows
+- Recovery Calculator and Escalera Calculator each moved to dedicated pages (`RecoveryPage`, `EscaleraPage`) with own tab navigation and back-to-menu navigation
+- Two premium entry cards replace the previous single-tool layout
+
+## [1.0.2] - 2026-07-13
+
+### Added
+- Reto Escalera calculator mode: new dedicated calculator for escalating bet recovery strategies
+
+## [1.0.1] - 2026-07-13
+
+### Added
+- Premium gambling-themed visual redesign: dark casino aesthetic with gold accents across all components
+
+### Fixed
+- Replaced `xlsx` with `write-excel-file/browser` to eliminate prototype pollution and ReDoS vulnerabilities
+- Upgraded `jspdf` to 4.2.1 and `jspdf-autotable` to 5.x to patch DOMPurify vulnerability chain
+- Upgraded Vite 5→8 and Vitest 2→4 to eliminate all remaining dependency vulnerabilities
+- Resolved ESLint errors that were blocking CI pipeline
+
+### Changed
+- CI/CD: upgraded Node.js 20→24 in GitHub Actions workflows
+- Removed deprecated `baseUrl` from `tsconfig.json` (TypeScript 6 migration)
+
 ## [1.0.0] - 2026-07-13
 
 ### Added
@@ -18,5 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Multi-currency support: COP, USD, EUR, MXN
 - Configurable thousands separator and decimal places
 - Smart alerts for low odds, high stakes, capital, and attempt thresholds
-- GitHub Actions CI/CD pipeline deploying to GitHub Pages
-- Vitest unit tests with >90% coverage on math utilities
+- `VERSION` file as single source of truth for app version, injected at build time via `vite.config.ts`
+- Version badge displayed in Header, version string in PDF export footer
+- GitHub Actions CI/CD: PR validation (blocks merge if VERSION not bumped, type-check, lint, test, build) and CD deploy to GitHub Pages with auto-tagging and GitHub Release on version change
+- 40 Vitest unit tests with >90% coverage on math utilities

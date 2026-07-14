@@ -1,17 +1,17 @@
-# Bet Recovery Calculator
+# Bet Tools Suite
 
-> Professional recovery betting calculator that computes the optimal next stake based on cumulative losses, fixed profit targets, and decimal odds.
+> Professional betting tools suite: recovery calculator, escalera calculator, and more — all client-side, math-transparent, and export-ready.
 
-[![Deploy](https://github.com/Wembie/bet-recovery-calculator/actions/workflows/deploy.yml/badge.svg)](https://github.com/Wembie/bet-recovery-calculator/actions/workflows/deploy.yml)
+[![Deploy](https://github.com/Wembie/bet-tools-suite/actions/workflows/deploy.yml/badge.svg)](https://github.com/Wembie/bet-tools-suite/actions/workflows/deploy.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Live:** https://wembie.github.io/bet-recovery-calculator/
+**Live:** https://wembie.github.io/bet-tools-suite/
 
 ---
 
 ## Overview
 
-Bet Recovery Calculator is a mathematically transparent tool for computing recovery betting plans. Unlike classic Martingale, every calculation is driven by a fixed profit target formula:
+Bet Tools Suite is a collection of mathematically transparent betting calculators. Unlike classic Martingale, every calculation is driven by a fixed profit target formula:
 
 ```
 Next Stake = (Accumulated Losses + Target Profit) / (Odds − 1)
@@ -56,13 +56,13 @@ This guarantees that **if any attempt wins**, the net result is always exactly t
 ## Installation
 
 ```bash
-git clone https://github.com/Wembie/bet-recovery-calculator.git
-cd bet-recovery-calculator
+git clone https://github.com/Wembie/bet-tools-suite.git
+cd bet-tools-suite
 npm install
 npm run dev
 ```
 
-Open http://localhost:5173/bet-recovery-calculator/
+Open http://localhost:5173/bet-tools-suite/
 
 ---
 

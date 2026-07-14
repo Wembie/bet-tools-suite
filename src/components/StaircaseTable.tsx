@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import type { StaircaseResult, AppSettings } from '@/types'
 import { formatCurrency, formatPercent } from '@/utils/formatters'
 
@@ -8,8 +9,17 @@ interface StaircaseTableProps {
 }
 
 export function StaircaseTable({ result, settings }: StaircaseTableProps) {
+  const { t } = useTranslation()
   const fmt = (v: number) =>
     formatCurrency(v, settings.currency, settings.thousandsSeparator, settings.decimalPlaces)
+
+  const headers = [
+    t('staircase.betAmount'),
+    t('staircase.return'),
+    t('staircase.betProfit'),
+    t('staircase.cumulativeProfit'),
+    t('staircase.growth'),
+  ]
 
   return (
     <motion.div
@@ -19,17 +29,20 @@ export function StaircaseTable({ result, settings }: StaircaseTableProps) {
       className="glass rounded-2xl border border-white/8 overflow-hidden shadow-card"
     >
       <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between">
-        <h3 className="text-sm font-bold text-white">Staircase Plan</h3>
-        <span className="text-xs text-white/30 font-mono">{result.attempts} bets</span>
+        <h3 className="text-sm font-bold text-white">{t('staircase.tableTitle')}</h3>
+        <span className="text-xs text-white/30 font-mono">{result.attempts} {t('staircase.tableBets')}</span>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/5">
-              {['#', 'Bet Amount', 'Return', 'Bet Profit', 'Cumulative Profit', 'Growth'].map((h, i) => (
+              <th className="px-4 py-3 text-[10px] font-semibold uppercase tracking-widest text-white/25">
+                #
+              </th>
+              {headers.map((h, i) => (
                 <th
                   key={h}
-                  className={`px-4 py-3 text-[10px] font-semibold uppercase tracking-widest text-white/25 ${i > 0 ? 'text-right' : ''}`}
+                  className={`px-4 py-3 text-[10px] font-semibold uppercase tracking-widest text-white/25 ${i >= 0 ? 'text-right' : ''}`}
                 >
                   {h}
                 </th>

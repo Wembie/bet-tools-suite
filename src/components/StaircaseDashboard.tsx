@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { DollarSign, TrendingUp, Percent, Hash } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { StaircaseResult, AppSettings } from '@/types'
 import { formatCurrency, formatPercent } from '@/utils/formatters'
 
@@ -9,14 +10,15 @@ interface StaircaseDashboardProps {
 }
 
 export function StaircaseDashboard({ result, settings }: StaircaseDashboardProps) {
+  const { t } = useTranslation()
   const fmt = (v: number) =>
     formatCurrency(v, settings.currency, settings.thousandsSeparator, settings.decimalPlaces)
 
   const metrics = [
     {
-      label: 'Final Amount',
+      label: t('staircase.finalAmount'),
       value: fmt(result.finalAmount),
-      sub: `Started with ${fmt(result.initialAmount)}`,
+      sub: t('staircase.startedWith', { amount: fmt(result.initialAmount) }),
       icon: DollarSign,
       border: 'border-emerald-500/20',
       bg: 'bg-emerald-500/8',
@@ -25,9 +27,9 @@ export function StaircaseDashboard({ result, settings }: StaircaseDashboardProps
       valueColor: 'text-emerald-400',
     },
     {
-      label: 'Total Profit',
+      label: t('staircase.totalProfit'),
       value: `+${fmt(result.totalProfit)}`,
-      sub: 'Net gain if all bets win',
+      sub: t('staircase.netGain'),
       icon: TrendingUp,
       border: 'border-amber-500/20',
       bg: 'bg-amber-500/8',
@@ -36,9 +38,9 @@ export function StaircaseDashboard({ result, settings }: StaircaseDashboardProps
       valueColor: 'text-amber-400',
     },
     {
-      label: 'Total Growth',
+      label: t('staircase.totalGrowth'),
       value: formatPercent(result.totalGrowthPercent),
-      sub: `Over ${result.attempts} bets`,
+      sub: t('staircase.overBets', { count: result.attempts }),
       icon: Percent,
       border: 'border-purple-500/20',
       bg: 'bg-purple-500/8',
@@ -47,9 +49,9 @@ export function StaircaseDashboard({ result, settings }: StaircaseDashboardProps
       valueColor: 'text-purple-400',
     },
     {
-      label: 'Bets Required',
+      label: t('staircase.betsRequired'),
       value: result.attempts.toString(),
-      sub: `All must win · ×${result.odds} odds`,
+      sub: t('staircase.allMustWin', { odds: result.odds }),
       icon: Hash,
       border: 'border-white/10',
       bg: 'bg-white/5',

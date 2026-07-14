@@ -66,7 +66,8 @@ export interface ValidationError {
 
 export interface AlertInfo {
   type: 'warning' | 'error' | 'info'
-  message: string
+  messageKey: string
+  params?: Record<string, string | number>
 }
 
 export interface StaircaseInputs {

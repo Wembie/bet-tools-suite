@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.5] - 2026-07-13
+
+### Added
+- i18n support for English and Spanish via `react-i18next` + `i18next-browser-languagedetector`
+- Translation files at `src/locales/en.json` and `src/locales/es.json` covering all UI surfaces
+- Language toggle button in Header (EN ↔ ES), persisted to `localStorage` key `bet-tools-lang`
+- Language auto-detected from browser preferences on first visit
+
+### Changed
+- All user-facing strings in 12 components and 1 page now use `t()` — labels, hints, table headers, alerts, settings, export buttons, dashboard metrics, staircase dashboard/table
+- `AlertInfo` type: `message: string` replaced by `messageKey: string` + optional `params` for interpolation
+- `generateAlerts()` in `calculations.ts` now returns translation keys with params instead of hardcoded English strings
+- Zod schema error messages now use translation keys (`validation.*`) so form errors translate automatically
+
 ## [1.0.4] - 2026-07-13
 
 ### Changed

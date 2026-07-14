@@ -110,28 +110,32 @@ export function generateAlerts(
   if (result.odds < ODDS_WARNING_THRESHOLD) {
     alerts.push({
       type: 'warning',
-      message: `Odds ${result.odds} are very low (<1.10). Recovery requires much larger stakes.`,
+      messageKey: 'validation.lowOdds',
+      params: { odds: result.odds },
     })
   }
 
   if (result.largestStake > settings.maxStakeAlert) {
     alerts.push({
       type: 'warning',
-      message: `Largest stake (${result.largestStake.toFixed(2)}) exceeds your alert threshold of ${settings.maxStakeAlert}.`,
+      messageKey: 'validation.stakeThreshold',
+      params: { stake: result.largestStake.toFixed(2), threshold: settings.maxStakeAlert },
     })
   }
 
   if (result.requiredCapital > settings.maxCapitalAlert) {
     alerts.push({
       type: 'error',
-      message: `Required capital (${result.requiredCapital.toFixed(2)}) exceeds your alert threshold of ${settings.maxCapitalAlert}.`,
+      messageKey: 'validation.capitalThreshold',
+      params: { capital: result.requiredCapital.toFixed(2), threshold: settings.maxCapitalAlert },
     })
   }
 
   if (result.attempts > settings.maxAttemptsAlert) {
     alerts.push({
       type: 'warning',
-      message: `${result.attempts} attempts is high. Risk of ruin increases significantly beyond 30 attempts.`,
+      messageKey: 'validation.highAttempts',
+      params: { attempts: result.attempts },
     })
   }
 

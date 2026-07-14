@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { AlertTriangle, XCircle, Info } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { AlertInfo } from '@/types'
 
 interface AlertsProps {
@@ -22,6 +23,8 @@ const CONFIG = {
 }
 
 export function Alerts({ alerts }: AlertsProps) {
+  const { t } = useTranslation()
+
   if (alerts.length === 0) return null
 
   return (
@@ -41,7 +44,7 @@ export function Alerts({ alerts }: AlertsProps) {
             className={`flex items-start gap-2.5 p-3 rounded-xl border text-xs leading-relaxed ${CONFIG[alert.type].cls}`}
           >
             {CONFIG[alert.type].icon}
-            <p>{alert.message}</p>
+            <p>{t(alert.messageKey, alert.params)}</p>
           </motion.div>
         ))}
       </motion.div>

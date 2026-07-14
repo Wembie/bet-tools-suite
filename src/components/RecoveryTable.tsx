@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { motion } from 'framer-motion'
 import { ArrowUpDown, ArrowUp, ArrowDown, Copy, Check } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { CalculationResult, AppSettings, SortConfig, SortKey } from '@/types'
 import { formatCurrency, formatPercent } from '@/utils/formatters'
 
@@ -10,6 +11,7 @@ interface RecoveryTableProps {
 }
 
 export function RecoveryTable({ result, settings }: RecoveryTableProps) {
+  const { t } = useTranslation()
   const [sort, setSort] = useState<SortConfig>({ key: 'attempt', direction: 'asc' })
   const [copiedRow, setCopiedRow] = useState<number | null>(null)
 
@@ -63,15 +65,15 @@ export function RecoveryTable({ result, settings }: RecoveryTableProps) {
     })
   }
 
-  const columns: { key: SortKey; label: string; align?: string }[] = [
-    { key: 'attempt', label: '#' },
-    { key: 'stake', label: 'Stake', align: 'text-right' },
-    { key: 'accumulatedLoss', label: 'Acc. Loss', align: 'text-right' },
-    { key: 'totalCapital', label: 'Capital', align: 'text-right' },
-    { key: 'grossReturn', label: 'Gross Return', align: 'text-right' },
-    { key: 'netProfit', label: 'Net Profit', align: 'text-right' },
-    { key: 'roi', label: 'ROI', align: 'text-right' },
-    { key: 'expectedResult', label: 'Result', align: 'text-right' },
+  const columns: { key: SortKey; labelKey: string; align?: string }[] = [
+    { key: 'attempt', labelKey: 'table.attempt' },
+    { key: 'stake', labelKey: 'table.stake', align: 'text-right' },
+    { key: 'accumulatedLoss', labelKey: 'table.accLoss', align: 'text-right' },
+    { key: 'totalCapital', labelKey: 'table.capital', align: 'text-right' },
+    { key: 'grossReturn', labelKey: 'table.grossReturn', align: 'text-right' },
+    { key: 'netProfit', labelKey: 'table.netProfit', align: 'text-right' },
+    { key: 'roi', labelKey: 'table.roi', align: 'text-right' },
+    { key: 'expectedResult', labelKey: 'table.result', align: 'text-right' },
   ]
 
   return (
@@ -82,8 +84,8 @@ export function RecoveryTable({ result, settings }: RecoveryTableProps) {
       className="glass rounded-2xl border border-white/8 overflow-hidden shadow-card"
     >
       <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between">
-        <h3 className="text-sm font-bold text-white">Recovery Plan</h3>
-        <span className="text-xs text-white/30 font-mono">{result.rows.length} attempts</span>
+        <h3 className="text-sm font-bold text-white">{t('table.title')}</h3>
+        <span className="text-xs text-white/30 font-mono">{result.rows.length} {t('table.attempts')}</span>
       </div>
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
@@ -98,7 +100,7 @@ export function RecoveryTable({ result, settings }: RecoveryTableProps) {
                     className="inline-flex items-center gap-1 hover:text-white/60 transition-colors"
                     onClick={() => handleSort(col.key)}
                   >
-                    {col.label}
+                    {t(col.labelKey)}
                     <SortIcon col={col.key} />
                   </button>
                 </th>

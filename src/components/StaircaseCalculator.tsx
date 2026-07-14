@@ -3,13 +3,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { motion } from 'framer-motion'
 import { Layers, RotateCcw } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import { Label } from '@/components/ui/label'
 import type { StaircaseInputs } from '@/types'
 
 const schema = z.object({
-  initialAmount: z.number({ invalid_type_error: 'Required' }).positive('Must be > 0'),
-  odds: z.number({ invalid_type_error: 'Required' }).gt(1, 'Must be > 1.00'),
-  attempts: z.number({ invalid_type_error: 'Required' }).int().min(1).max(365, 'Max 365'),
+  initialAmount: z.number({ invalid_type_error: 'validation.required' }).positive('validation.mustBePositive'),
+  odds: z.number({ invalid_type_error: 'validation.required' }).gt(1, 'validation.mustBeGreaterThan1'),
+  attempts: z.number({ invalid_type_error: 'validation.required' }).int().min(1).max(365, 'validation.maxBets'),
 })
 
 interface StaircaseCalculatorProps {
@@ -18,13 +19,15 @@ interface StaircaseCalculatorProps {
   isCalculating: boolean
 }
 
-const FIELDS = [
-  { id: 'initialAmount', label: 'Initial Amount', placeholder: '20000', hint: 'Starting bankroll', step: '0.01', icon: '$' },
-  { id: 'odds', label: 'Decimal Odds', placeholder: '1.30', hint: 'Multiplier per bet (must be > 1.00)', step: '0.01', icon: '×' },
-  { id: 'attempts', label: 'Bets', placeholder: '18', hint: 'Number of bets in the challenge (max 365)', step: '1', icon: '#' },
-] as const
-
 export function StaircaseCalculator({ onCalculate, onReset, isCalculating }: StaircaseCalculatorProps) {
+  const { t } = useTranslation()
+
+  const FIELDS = [
+    { id: 'initialAmount' as const, labelKey: 'staircase.initialAmount', hintKey: 'staircase.initialAmountHint', placeholder: '20000', step: '0.01', icon: '$' },
+    { id: 'odds' as const, labelKey: 'staircase.odds', hintKey: 'staircase.oddsHint', placeholder: '1.30', step: '0.01', icon: '×' },
+    { id: 'attempts' as const, labelKey: 'staircase.bets', hintKey: 'staircase.betsHint', placeholder: '18', step: '1', icon: '#' },
+  ]
+
   const {
     register,
     handleSubmit,
@@ -52,10 +55,10 @@ export function StaircaseCalculator({ onCalculate, onReset, isCalculating }: Sta
           <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-purple-500 to-violet-600 flex items-center justify-center">
             <Layers className="h-3.5 w-3.5 text-white" />
           </div>
-          <h2 className="text-sm font-bold text-white">Reto Escalera</h2>
+          <h2 className="text-sm font-bold text-white">{t('staircase.title')}</h2>
         </div>
         <p className="text-xs text-white/30 font-mono pl-9">
-          Total(n) = Inicial × Cuota^n
+          {t('staircase.formula')}
         </p>
       </div>
 
@@ -64,7 +67,7 @@ export function StaircaseCalculator({ onCalculate, onReset, isCalculating }: Sta
           {FIELDS.map(field => (
             <div key={field.id}>
               <Label htmlFor={field.id} className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5 block">
-                {field.label}
+                {t(field.labelKey)}
               </Label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-purple-400/70 w-4 text-center select-none">
@@ -84,7 +87,7 @@ export function StaircaseCalculator({ onCalculate, onReset, isCalculating }: Sta
                 />
               </div>
               <p className={`text-[11px] mt-1 ${errors[field.id] ? 'text-red-400' : 'text-white/25'}`}>
-                {errors[field.id]?.message ?? field.hint}
+                {errors[field.id]?.message ? t(errors[field.id]!.message!) : t(field.hintKey)}
               </p>
             </div>
           ))}
@@ -98,11 +101,11 @@ export function StaircaseCalculator({ onCalculate, onReset, isCalculating }: Sta
               className="flex-1 h-11 bg-gradient-to-r from-purple-600 to-violet-500 text-white font-black text-sm rounded-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-[0_4px_20px_rgba(168,85,247,0.3)]"
             >
               {isCalculating ? (
-                <span className="animate-pulse">Calculando...</span>
+                <span className="animate-pulse">{t('staircase.calculating')}</span>
               ) : (
                 <>
                   <Layers className="h-3.5 w-3.5" />
-                  Calcular
+                  {t('staircase.calculate')}
                 </>
               )}
             </motion.button>

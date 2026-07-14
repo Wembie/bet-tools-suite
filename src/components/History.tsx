@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { Trash2, Copy, RotateCcw, Clock, ChevronRight, Zap } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { HistoryEntry, AppSettings } from '@/types'
 import { formatCurrency, formatDate } from '@/utils/formatters'
 
@@ -13,6 +14,7 @@ interface HistoryProps {
 }
 
 export function History({ history, settings, onLoad, onDelete, onDuplicate, onClear }: HistoryProps) {
+  const { t } = useTranslation()
   const fmt = (v: number) =>
     formatCurrency(v, settings.currency, settings.thousandsSeparator, settings.decimalPlaces)
 
@@ -26,8 +28,8 @@ export function History({ history, settings, onLoad, onDelete, onDuplicate, onCl
         <div className="w-14 h-14 rounded-2xl glass border border-white/8 flex items-center justify-center mb-4">
           <Clock className="h-6 w-6 text-white/15" />
         </div>
-        <p className="text-sm font-semibold text-white/40">No calculations yet</p>
-        <p className="text-xs text-white/20 mt-1">Run a calculation to see your history here</p>
+        <p className="text-sm font-semibold text-white/40">{t('history.empty')}</p>
+        <p className="text-xs text-white/20 mt-1">{t('history.emptyHint')}</p>
       </motion.div>
     )
   }
@@ -41,16 +43,16 @@ export function History({ history, settings, onLoad, onDelete, onDuplicate, onCl
       {/* Header */}
       <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-bold text-white">Calculation History</h3>
+          <h3 className="text-sm font-bold text-white">{t('history.title')}</h3>
           <p className="text-[10px] uppercase tracking-widest text-amber-400/50 mt-0.5">
-            {history.length} saved session{history.length !== 1 ? 's' : ''}
+            {t(`history.session_${history.length === 1 ? 'one' : 'other'}`, { count: history.length })}
           </p>
         </div>
         <button
           onClick={onClear}
           className="text-[10px] uppercase tracking-widest text-red-400/40 hover:text-red-400/70 transition-colors px-3 py-1.5 rounded-lg hover:bg-red-500/8 border border-transparent hover:border-red-500/15"
         >
-          Clear all
+          {t('history.clearAll')}
         </button>
       </div>
 
@@ -83,10 +85,10 @@ export function History({ history, settings, onLoad, onDelete, onDuplicate, onCl
                     <span className="font-bold text-white">{fmt(entry.initialStake)}</span>
                     <ChevronRight className="h-3 w-3 text-white/20 shrink-0" />
                     <span className="text-white/40">
-                      Capital: <span className="text-white/70 font-semibold">{fmt(entry.requiredCapital)}</span>
+                      {t('history.capital')} <span className="text-white/70 font-semibold">{fmt(entry.requiredCapital)}</span>
                     </span>
                     <span className="text-white/25">·</span>
-                    <span className="text-white/30">{entry.attempts} attempts</span>
+                    <span className="text-white/30">{entry.attempts} {t('history.attempts')}</span>
                   </div>
                 </div>
 
@@ -94,28 +96,28 @@ export function History({ history, settings, onLoad, onDelete, onDuplicate, onCl
                 <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
                   <button
                     onClick={() => onLoad(entry)}
-                    title="Load results"
+                    title={t('history.loadResults')}
                     className="w-7 h-7 rounded-lg hover:bg-amber-500/10 flex items-center justify-center text-white/25 hover:text-amber-400 transition-all border border-transparent hover:border-amber-500/20"
                   >
                     <Zap className="h-3 w-3" />
                   </button>
                   <button
                     onClick={() => onDuplicate(entry.id)}
-                    title="Duplicate"
+                    title={t('history.duplicate')}
                     className="w-7 h-7 rounded-lg hover:bg-white/8 flex items-center justify-center text-white/25 hover:text-white/60 transition-all"
                   >
                     <Copy className="h-3 w-3" />
                   </button>
                   <button
                     onClick={() => onLoad(entry)}
-                    title="Recalculate"
+                    title={t('history.recalculate')}
                     className="w-7 h-7 rounded-lg hover:bg-white/8 flex items-center justify-center text-white/25 hover:text-white/60 transition-all"
                   >
                     <RotateCcw className="h-3 w-3" />
                   </button>
                   <button
                     onClick={() => onDelete(entry.id)}
-                    title="Delete"
+                    title={t('history.delete')}
                     className="w-7 h-7 rounded-lg hover:bg-red-500/10 flex items-center justify-center text-white/25 hover:text-red-400 transition-all"
                   >
                     <Trash2 className="h-3 w-3" />

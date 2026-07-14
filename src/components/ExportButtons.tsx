@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { FileText, FileSpreadsheet, File, Loader2 } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 import type { CalculationResult, AppSettings } from '@/types'
 import { exportCSV, exportExcel, exportPDF } from '@/utils/exporters'
 
@@ -10,14 +11,15 @@ interface ExportButtonsProps {
 
 type ExportFormat = 'csv' | 'excel' | 'pdf'
 
-const BUTTONS = [
-  { format: 'csv' as ExportFormat, label: 'CSV', icon: FileText },
-  { format: 'excel' as ExportFormat, label: 'Excel', icon: FileSpreadsheet },
-  { format: 'pdf' as ExportFormat, label: 'PDF', icon: File },
-]
-
 export function ExportButtons({ result, settings }: ExportButtonsProps) {
+  const { t } = useTranslation()
   const [loading, setLoading] = useState<ExportFormat | null>(null)
+
+  const BUTTONS: { format: ExportFormat; labelKey: string; icon: React.ElementType }[] = [
+    { format: 'csv', labelKey: 'export.csv', icon: FileText },
+    { format: 'excel', labelKey: 'export.excel', icon: FileSpreadsheet },
+    { format: 'pdf', labelKey: 'export.pdf', icon: File },
+  ]
 
   async function handleExport(format: ExportFormat) {
     setLoading(format)
@@ -32,8 +34,8 @@ export function ExportButtons({ result, settings }: ExportButtonsProps) {
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-[10px] uppercase tracking-widest text-white/25 mr-1">Export</span>
-      {BUTTONS.map(({ format, label, icon: Icon }) => (
+      <span className="text-[10px] uppercase tracking-widest text-white/25 mr-1">{t('export.label')}</span>
+      {BUTTONS.map(({ format, labelKey, icon: Icon }) => (
         <button
           key={format}
           onClick={() => handleExport(format)}
@@ -45,7 +47,7 @@ export function ExportButtons({ result, settings }: ExportButtonsProps) {
           ) : (
             <Icon className="h-3 w-3" />
           )}
-          {label}
+          {t(labelKey)}
         </button>
       ))}
     </div>

@@ -10,17 +10,22 @@ import { History } from '@/components/History'
 import { Settings } from '@/components/Settings'
 import { Alerts } from '@/components/Alerts'
 import { ExportButtons } from '@/components/ExportButtons'
+import { StaircaseCalculator } from '@/components/StaircaseCalculator'
+import { StaircaseDashboard } from '@/components/StaircaseDashboard'
+import { StaircaseTable } from '@/components/StaircaseTable'
 import { useCalculator } from '@/hooks/useCalculator'
 import { useHistory } from '@/hooks/useHistory'
 import { useSettings } from '@/hooks/useSettings'
-import type { CalculatorInputs } from '@/types'
+import { useStaircase } from '@/hooks/useStaircase'
+import type { CalculatorInputs, StaircaseInputs } from '@/types'
 
-type Page = 'landing' | 'calculator' | 'results' | 'history'
+type Page = 'landing' | 'calculator' | 'results' | 'history' | 'escalera'
 
 export function Home() {
   const { settings, updateSettings } = useSettings()
   const { result, errors, alerts, isCalculating, calculate, reset } = useCalculator()
   const { history, saveToHistory, deleteFromHistory, duplicateEntry, clearHistory } = useHistory()
+  const { result: staircaseResult, isCalculating: staircaseCalc, calculate: calcStaircase, reset: resetStaircase } = useStaircase()
   const [showSettings, setShowSettings] = useState(false)
   const [page, setPage] = useState<Page>('landing')
   const chartsRef = useRef<ChartsHandle>(null)
@@ -33,6 +38,10 @@ export function Home() {
     }
   }
 
+  function handleStaircaseCalculate(inputs: StaircaseInputs) {
+    calcStaircase(inputs)
+  }
+
   function goToCalculator() {
     setPage('calculator')
   }
@@ -41,10 +50,11 @@ export function Home() {
     return <Landing onEnter={goToCalculator} />
   }
 
-  const NAV_TABS: { id: Page; label: string; disabled?: boolean }[] = [
-    { id: 'calculator', label: 'Calculator' },
+  const NAV_TABS: { id: Page; label: string; disabled?: boolean; accent?: string }[] = [
+    { id: 'calculator', label: 'Recovery' },
     { id: 'results', label: 'Results', disabled: !result },
     { id: 'history', label: `History${history.length > 0 ? ` (${history.length})` : ''}` },
+    { id: 'escalera', label: 'Reto Escalera', accent: 'purple' },
   ]
 
   return (
@@ -72,7 +82,9 @@ export function Home() {
               onClick={() => setPage(tab.id)}
               className={`px-4 py-2 rounded-lg text-sm font-semibold transition-all disabled:opacity-30 disabled:cursor-not-allowed ${
                 page === tab.id
-                  ? 'bg-gradient-gold text-black shadow-gold-sm'
+                  ? tab.accent === 'purple'
+                    ? 'bg-gradient-to-r from-purple-600 to-violet-500 text-white shadow-[0_2px_12px_rgba(168,85,247,0.4)]'
+                    : 'bg-gradient-gold text-black shadow-gold-sm'
                   : 'text-white/40 hover:text-white/70'
               }`}
             >
@@ -191,6 +203,54 @@ export function Home() {
                 onDuplicate={duplicateEntry}
                 onClear={clearHistory}
               />
+            </motion.div>
+          )}
+
+          {/* ── Escalera ── */}
+          {page === 'escalera' && (
+            <motion.div
+              key="escalera"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.25 }}
+              className="space-y-6"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="lg:col-span-1">
+                  <StaircaseCalculator
+                    onCalculate={handleStaircaseCalculate}
+                    onReset={resetStaircase}
+                    isCalculating={staircaseCalc}
+                  />
+                </div>
+                <div className="lg:col-span-2">
+                  {!staircaseResult ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="flex flex-col items-center justify-center py-24 text-center"
+                    >
+                      <div className="w-16 h-16 rounded-2xl glass border border-purple-500/20 bg-purple-500/8 flex items-center justify-center mb-5 animate-pulse">
+                        <svg className="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 13l4-4 4 4 4-8 4 4" />
+                        </svg>
+                      </div>
+                      <h2 className="text-lg font-bold text-white mb-2">Lista para escalar</h2>
+                      <p className="text-sm text-white/30 max-w-xs leading-relaxed">
+                        Ingresa tu monto inicial, cuota y número de apuestas para ver el plan completo.
+                      </p>
+                    </motion.div>
+                  ) : (
+                    <div className="space-y-4">
+                      <StaircaseDashboard result={staircaseResult} settings={settings} />
+                    </div>
+                  )}
+                </div>
+              </div>
+              {staircaseResult && (
+                <StaircaseTable result={staircaseResult} settings={settings} />
+              )}
             </motion.div>
           )}
         </AnimatePresence>

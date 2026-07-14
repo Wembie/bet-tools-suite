@@ -1,5 +1,5 @@
-import { TrendingUp, Github, Moon, Sun, Settings } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { motion } from 'framer-motion'
+import { TrendingUp, Github, Moon, Sun, Settings, Home } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import type { AppSettings } from '@/types'
 import { APP_NAME, GITHUB_URL } from '@/constants'
@@ -8,64 +8,88 @@ interface HeaderProps {
   settings: AppSettings
   onThemeToggle: () => void
   onSettingsOpen: () => void
+  onHome?: () => void
 }
 
-export function Header({ settings, onThemeToggle, onSettingsOpen }: HeaderProps) {
+export function Header({ settings, onThemeToggle, onSettingsOpen, onHome }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-40 border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <motion.header
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4 }}
+      className="sticky top-0 z-40 glass border-b border-white/5"
+    >
       <div className="container flex h-16 items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-primary">
-            <TrendingUp className="h-5 w-5 text-primary-foreground" />
+          {onHome && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button
+                  onClick={onHome}
+                  className="text-white/30 hover:text-white/70 transition-colors mr-1"
+                >
+                  <Home className="h-4 w-4" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>Back to home</TooltipContent>
+            </Tooltip>
+          )}
+          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-gradient-gold glow-gold-sm shrink-0">
+            <TrendingUp className="h-4 w-4 text-black" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-base font-semibold tracking-tight">{APP_NAME}</h1>
-              <span className="hidden sm:inline-flex items-center rounded-full border border-border/60 px-2 py-0.5 text-[10px] font-mono text-muted-foreground">
+              <h1 className="text-sm font-bold tracking-tight text-white">{APP_NAME}</h1>
+              <span className="hidden sm:inline-flex items-center rounded-full border border-amber-500/20 bg-amber-500/5 px-2 py-0.5 text-[10px] font-mono text-amber-400/60">
                 v{__APP_VERSION__}
               </span>
             </div>
-            <p className="text-xs text-muted-foreground hidden sm:block">
-              Mathematical recovery betting calculator
+            <p className="text-[11px] text-white/30 hidden sm:block">
+              Recovery betting calculator
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" asChild>
-                <a href={GITHUB_URL} target="_blank" rel="noopener noreferrer">
-                  <Github className="h-4 w-4" />
-                </a>
-              </Button>
+              <a
+                href={GITHUB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center w-9 h-9 rounded-lg text-white/30 hover:text-white/70 hover:bg-white/5 transition-all"
+              >
+                <Github className="h-4 w-4" />
+              </a>
             </TooltipTrigger>
-            <TooltipContent>View on GitHub</TooltipContent>
+            <TooltipContent>GitHub</TooltipContent>
           </Tooltip>
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={onThemeToggle}>
-                {settings.theme === 'dark' ? (
-                  <Sun className="h-4 w-4" />
-                ) : (
-                  <Moon className="h-4 w-4" />
-                )}
-              </Button>
+              <button
+                onClick={onThemeToggle}
+                className="flex items-center justify-center w-9 h-9 rounded-lg text-white/30 hover:text-white/70 hover:bg-white/5 transition-all"
+              >
+                {settings.theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+              </button>
             </TooltipTrigger>
             <TooltipContent>Toggle theme</TooltipContent>
           </Tooltip>
 
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={onSettingsOpen}>
+              <button
+                onClick={onSettingsOpen}
+                className="flex items-center justify-center w-9 h-9 rounded-lg text-white/30 hover:text-white/70 hover:bg-white/5 transition-all"
+              >
                 <Settings className="h-4 w-4" />
-              </Button>
+              </button>
             </TooltipTrigger>
             <TooltipContent>Settings</TooltipContent>
           </Tooltip>
         </div>
       </div>
-    </header>
+    </motion.header>
   )
 }

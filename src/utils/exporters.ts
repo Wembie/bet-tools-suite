@@ -27,7 +27,7 @@ export function exportCSV(result: CalculationResult, _settings: AppSettings): vo
 
   const csvContent = [headers, ...rows].map(row => row.join(',')).join('\n')
   const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' })
-  downloadBlob(blob, `bet-recovery-${Date.now()}.csv`)
+  downloadBlob(blob, `bet-tools-${Date.now()}.csv`)
 }
 
 export async function exportExcel(result: CalculationResult, _settings: AppSettings): Promise<void> {
@@ -59,7 +59,7 @@ export async function exportExcel(result: CalculationResult, _settings: AppSetti
   ])
 
   await writeXlsxFile([headers, ...dataRows], {
-    fileName: `bet-recovery-${Date.now()}.xlsx`,
+    fileName: `bet-tools-${Date.now()}.xlsx`,
     columns: [
       { width: 6 }, { width: 14 }, { width: 14 }, { width: 14 },
       { width: 14 }, { width: 14 }, { width: 10 }, { width: 18 },
@@ -194,7 +194,7 @@ export async function exportPDF(
     doc.text(`Page ${i} of ${totalPages}`, pageWidth - 10, pageHeight - 4, { align: 'right' })
   }
 
-  doc.save(`bet-recovery-${Date.now()}.pdf`)
+  doc.save(`bet-tools-${Date.now()}.pdf`)
 }
 
 function downloadBlob(blob: Blob, filename: string): void {

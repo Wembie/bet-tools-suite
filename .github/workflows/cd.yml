@@ -1,4 +1,4 @@
-name: CD — Bet Recovery Calculator
+name: CD — Bet Tools Suite
 
 on:
   workflow_dispatch:
@@ -119,5 +119,5 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v${{ needs.tag.outputs.version }}
-          name: Bet Recovery Calculator v${{ needs.tag.outputs.version }}
+          name: Bet Tools Suite v${{ needs.tag.outputs.version }}
           generate_release_notes: true

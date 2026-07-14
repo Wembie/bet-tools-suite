@@ -1,4 +1,4 @@
-name: CI — Bet Recovery Calculator
+name: CI — Bet Tools Suite
 
 on:
   workflow_dispatch:

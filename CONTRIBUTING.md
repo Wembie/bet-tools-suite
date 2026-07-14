@@ -3,8 +3,8 @@
 ## Development Setup
 
 ```bash
-git clone https://github.com/Wembie/bet-recovery-calculator.git
-cd bet-recovery-calculator
+git clone https://github.com/Wembie/bet-tools-suite.git
+cd bet-tools-suite
 npm install
 npm run dev
 ```

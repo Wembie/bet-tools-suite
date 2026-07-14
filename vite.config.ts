@@ -7,7 +7,7 @@ const appVersion = readFileSync('./VERSION', 'utf-8').trim()
 
 export default defineConfig({
   plugins: [react()],
-  base: '/bet-recovery-calculator/',
+  base: '/bet-tools-suite/',
   define: {
     __APP_VERSION__: JSON.stringify(appVersion),
   },

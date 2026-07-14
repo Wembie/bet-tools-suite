@@ -23,6 +23,9 @@ dist-ssr
 *.sln
 *.sw?
 
+# TypeScript build info
+*.tsbuildinfo
+
 # Coverage
 coverage
 

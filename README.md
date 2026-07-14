@@ -162,6 +162,6 @@ MIT — see [LICENSE](LICENSE).
 
 ## Author
 
-**Wembie** — jeacosta@enerbit.co
+**Wembie**
 
 > This tool is for educational and analytical purposes only. Bet responsibly.

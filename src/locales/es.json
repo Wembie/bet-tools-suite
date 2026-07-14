@@ -143,6 +143,17 @@
     "escEnter": "INICIAR RETO",
     "disclaimer": "Solo con fines educativos · Apuesta responsablemente"
   },
+  "recovery": {
+    "emptyTitle": "Listo para calcular",
+    "emptyHint": "Ingresa tus parámetros y presiona Calcular para generar tu plan de recuperación completo.",
+    "errorLabel": "Error de cálculo"
+  },
+  "escalera": {
+    "emptyTitle": "Lista para escalar",
+    "emptyHint": "Ingresa tu monto inicial, cuota y número de apuestas para ver el plan completo.",
+    "emptyResultsTitle": "Sin resultados",
+    "emptyResultsHint": "Vuelve a la calculadora e ingresa tus parámetros para generar el plan."
+  },
   "validation": {
     "required": "Requerido",
     "mustBePositive": "Debe ser > 0",

@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { Header } from '@/components/Header'
 import { Calculator } from '@/components/Calculator'
 import { Dashboard } from '@/components/Dashboard'
@@ -28,6 +29,7 @@ const TABS: { id: Tab; label: string }[] = [
 ]
 
 export function RecoveryPage({ settings, onBack, onThemeToggle, onSettingsOpen }: RecoveryPageProps) {
+  const { t } = useTranslation()
   const [tab, setTab] = useState<Tab>('calculator')
   const { result, errors, alerts, isCalculating, calculate, reset } = useCalculator()
   const { history, saveToHistory, deleteFromHistory, duplicateEntry, clearHistory } = useHistory()
@@ -42,11 +44,14 @@ export function RecoveryPage({ settings, onBack, onThemeToggle, onSettingsOpen }
   }
 
   return (
-    <div className="min-h-screen bg-[#06060f]">
+    <div className="min-h-screen bg-[#04040c]">
+      {/* Grid overlay */}
+      <div className="fixed inset-0 grid-overlay pointer-events-none z-0" />
       {/* Background mesh */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-700/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-amber-500/4 rounded-full blur-[100px]" />
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute top-0 left-1/3 w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[160px]" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-700/6 rounded-full blur-[140px]" />
+        <div className="absolute top-1/2 left-0 w-[300px] h-[300px] bg-amber-600/3 rounded-full blur-[100px]" />
       </div>
 
       <Header
@@ -134,19 +139,17 @@ export function RecoveryPage({ settings, onBack, onThemeToggle, onSettingsOpen }
                       animate={{ opacity: 1 }}
                       className="flex flex-col items-center justify-center py-24 text-center"
                     >
-                      <div className="w-16 h-16 rounded-2xl glass-gold border border-amber-500/20 flex items-center justify-center mb-5 animate-pulse-gold">
-                        <svg className="w-7 h-7 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.5}
-                            d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                          />
-                        </svg>
+                      <div className="relative w-20 h-20 mb-6">
+                        <div className="absolute inset-0 rounded-2xl bg-amber-500/6 border border-amber-500/20 animate-pulse-gold" />
+                        <div className="absolute inset-0 rounded-2xl flex items-center justify-center">
+                          <svg className="w-9 h-9 text-amber-400/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                          </svg>
+                        </div>
                       </div>
-                      <h2 className="text-lg font-bold text-white mb-2">Ready to calculate</h2>
-                      <p className="text-sm text-white/30 max-w-xs leading-relaxed">
-                        Enter your parameters and hit Calculate to generate your full recovery plan.
+                      <h2 className="text-lg font-bold text-white mb-2">{t('recovery.emptyTitle')}</h2>
+                      <p className="text-sm text-white/28 max-w-xs leading-relaxed">
+                        {t('recovery.emptyHint')}
                       </p>
                     </motion.div>
                   )}

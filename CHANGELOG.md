@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2026-07-14
+
+### Changed
+- Ultra-premium visual redesign: casino + sports gambling aesthetic across the entire app
+- `Landing.tsx` fully rewritten: live sports ticker (scrolling match scores with LIVE badges), floating sport emojis (⚽🏀🥊🏈🎾🏒⚾🏆) alongside casino chips, sport category pills strip, live odds board widget (sample featured match), enhanced mode cards with animated gradient borders, stats mini-bar inside each card, shimmer CTA button
+- `index.css`: new utility classes — `neon-gold`, `neon-purple`, `neon-green` text glow, `grid-overlay` dot grid background, `odds-cell`/`odds-cell-active` interactive odds buttons, `holo-wrap` holographic animated border, `sport-pill`, `input-premium`
+- `tailwind.config.js`: new keyframes (`float-slow`, `gradient-border`, `scroll-x`, `neon-breathe`, `flicker`, `bounce-sport`, `odds-flip`, `sweep`, `rotate-hue`, `particle-rise`), new gradient variants (`gradient-gold-h`, `gradient-fire`, `gradient-holo`, `gradient-sport`, `grid-lines`, `odds-board`), expanded neon shadows
+- `RecoveryPage.tsx`, `EscaleraPage.tsx`: darker unified background (`#04040c`), grid overlay, larger multi-color ambient glows, i18n-translated empty states, upgraded empty state visuals
+- `en.json`, `es.json`: added `recovery.*` and `escalera.*` namespace keys for empty states
+
 ## [1.0.5] - 2026-07-13
 
 ### Added

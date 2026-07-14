@@ -92,7 +92,7 @@
     "pdf": "PDF"
   },
   "staircase": {
-    "title": "Reto Escalera",
+    "title": "Staircase Challenge",
     "formula": "Total(n) = Initial × Odds^n",
     "initialAmount": "Initial Amount",
     "initialAmountHint": "Starting bankroll",
@@ -142,6 +142,17 @@
     "escF4": "Up to 365 bets support",
     "escEnter": "START CHALLENGE",
     "disclaimer": "For educational purposes only · Bet responsibly"
+  },
+  "recovery": {
+    "emptyTitle": "Ready to calculate",
+    "emptyHint": "Enter your parameters and hit Calculate to generate your full recovery plan.",
+    "errorLabel": "Calculation error"
+  },
+  "escalera": {
+    "emptyTitle": "Ready to climb",
+    "emptyHint": "Enter your initial amount, odds and number of bets to see the full plan.",
+    "emptyResultsTitle": "No results yet",
+    "emptyResultsHint": "Go back to the calculator and enter your parameters to generate the plan."
   },
   "validation": {
     "required": "Required",

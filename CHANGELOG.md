@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated GitHub URL in constants, README badges, live URL, clone instructions, and CONTRIBUTING setup guide
 - Renamed LocalStorage keys from `bet-recovery-*` to `bet-tools-*` (existing saved history/settings will not migrate automatically)
 - Renamed export filenames from `bet-recovery-*.{csv,xlsx,pdf}` to `bet-tools-*.{csv,xlsx,pdf}`
+- Fixed workflow names in `ci.yml` and `cd.yml` (still referenced old app name)
+- Added `CLAUDE.md` to `.gitignore`
 - Documented full version history in CHANGELOG (1.0.0 through 1.0.3 entries added)
 
 ## [1.0.3] - 2026-07-13

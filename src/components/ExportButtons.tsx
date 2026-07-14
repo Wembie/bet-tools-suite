@@ -18,7 +18,7 @@ export function ExportButtons({ result, settings }: ExportButtonsProps) {
     setLoading(format)
     try {
       if (format === 'csv') exportCSV(result, settings)
-      else if (format === 'excel') exportExcel(result, settings)
+      else if (format === 'excel') await exportExcel(result, settings)
       else await exportPDF(result, settings)
     } finally {
       setLoading(null)

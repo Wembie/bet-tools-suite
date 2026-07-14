@@ -30,44 +30,40 @@ export function exportCSV(result: CalculationResult, _settings: AppSettings): vo
   downloadBlob(blob, `bet-recovery-${Date.now()}.csv`)
 }
 
-export function exportExcel(result: CalculationResult, _settings: AppSettings): void {
-  import('xlsx').then(({ utils, writeFile }) => {
-    const wsData = [
-      ['Bet Recovery Calculator — Export'],
-      [`Generated: ${new Date().toLocaleString()}`],
-      [],
-      ['PARAMETERS'],
-      ['Odds', result.odds],
-      ['Target Profit', result.targetProfit],
-      ['Required Capital', result.requiredCapital],
-      ['Expected ROI', formatPercent(result.expectedROI)],
-      [],
-      [
-        'Attempt',
-        'Stake',
-        'Accumulated Loss',
-        'Total Capital',
-        'Gross Return',
-        'Net Profit',
-        'ROI',
-        'Expected Result',
-      ],
-      ...result.rows.map(row => [
-        row.attempt,
-        row.stake,
-        row.accumulatedLoss,
-        row.totalCapital,
-        row.grossReturn,
-        row.netProfit,
-        row.roi,
-        row.expectedResult,
-      ]),
-    ]
+export async function exportExcel(result: CalculationResult, _settings: AppSettings): Promise<void> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { default: writeXlsxFile } = await import('write-excel-file/browser' as any)
 
-    const ws = utils.aoa_to_sheet(wsData)
-    const wb = utils.book_new()
-    utils.book_append_sheet(wb, ws, 'Recovery Plan')
-    writeFile(wb, `bet-recovery-${Date.now()}.xlsx`)
+  const HEADER_STYLE = { fontWeight: 'bold', backgroundColor: '#0F172A', color: '#FFFFFF' }
+
+  const headers = [
+    { value: '#', ...HEADER_STYLE },
+    { value: 'Stake', ...HEADER_STYLE },
+    { value: 'Acc. Loss', ...HEADER_STYLE },
+    { value: 'Total Capital', ...HEADER_STYLE },
+    { value: 'Gross Return', ...HEADER_STYLE },
+    { value: 'Net Profit', ...HEADER_STYLE },
+    { value: 'ROI %', ...HEADER_STYLE },
+    { value: 'Result', ...HEADER_STYLE },
+  ]
+
+  const dataRows = result.rows.map(row => [
+    { type: Number, value: row.attempt },
+    { type: Number, value: Number(row.stake.toFixed(2)), format: '#,##0.00' },
+    { type: Number, value: Number(row.accumulatedLoss.toFixed(2)), format: '#,##0.00' },
+    { type: Number, value: Number(row.totalCapital.toFixed(2)), format: '#,##0.00' },
+    { type: Number, value: Number(row.grossReturn.toFixed(2)), format: '#,##0.00' },
+    { type: Number, value: Number(row.netProfit.toFixed(2)), format: '#,##0.00' },
+    { type: Number, value: Number(row.roi.toFixed(2)), format: '0.00' },
+    { type: String, value: row.expectedResult },
+  ])
+
+  await writeXlsxFile([headers, ...dataRows], {
+    fileName: `bet-recovery-${Date.now()}.xlsx`,
+    columns: [
+      { width: 6 }, { width: 14 }, { width: 14 }, { width: 14 },
+      { width: 14 }, { width: 14 }, { width: 10 }, { width: 18 },
+    ],
   })
 }
 

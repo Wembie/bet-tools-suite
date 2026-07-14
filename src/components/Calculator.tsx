@@ -2,22 +2,15 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { motion } from 'framer-motion'
-import { Calculator as CalcIcon, RotateCcw } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+import { Zap, RotateCcw } from 'lucide-react'
 import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import type { CalculatorInputs } from '@/types'
 
 const schema = z.object({
   initialStake: z.number({ invalid_type_error: 'Required' }).positive('Must be > 0'),
   odds: z.number({ invalid_type_error: 'Required' }).gt(1, 'Must be > 1.00'),
   targetProfit: z.number({ invalid_type_error: 'Required' }).positive('Must be > 0'),
-  maxAttempts: z
-    .number({ invalid_type_error: 'Required' })
-    .int()
-    .min(1)
-    .max(50, 'Max 50 attempts'),
+  maxAttempts: z.number({ invalid_type_error: 'Required' }).int().min(1).max(50, 'Max 50'),
 })
 
 interface CalculatorProps {
@@ -25,6 +18,13 @@ interface CalculatorProps {
   onReset: () => void
   isCalculating: boolean
 }
+
+const FIELDS = [
+  { id: 'initialStake', label: 'Initial Stake', placeholder: '100.00', hint: 'First bet amount', step: '0.01', icon: '$' },
+  { id: 'odds', label: 'Decimal Odds', placeholder: '2.00', hint: 'Must be greater than 1.00', step: '0.01', icon: '×' },
+  { id: 'targetProfit', label: 'Target Profit', placeholder: '100.00', hint: 'Fixed net gain per recovery', step: '0.01', icon: '+' },
+  { id: 'maxAttempts', label: 'Max Attempts', placeholder: '10', hint: 'Between 1 and 50', step: '1', icon: '#' },
+] as const
 
 export function Calculator({ onCalculate, onReset, isCalculating }: CalculatorProps) {
   const {
@@ -34,12 +34,7 @@ export function Calculator({ onCalculate, onReset, isCalculating }: CalculatorPr
     formState: { errors },
   } = useForm<CalculatorInputs>({
     resolver: zodResolver(schema),
-    defaultValues: {
-      initialStake: 100,
-      odds: 2.0,
-      targetProfit: 100,
-      maxAttempts: 10,
-    },
+    defaultValues: { initialStake: 100, odds: 2.0, targetProfit: 100, maxAttempts: 10 },
   })
 
   function onSubmit(data: CalculatorInputs) {
@@ -51,87 +46,84 @@ export function Calculator({ onCalculate, onReset, isCalculating }: CalculatorPr
     onReset()
   }
 
-  const fields = [
-    {
-      id: 'initialStake',
-      label: 'Initial Stake',
-      placeholder: '100.00',
-      hint: 'First bet amount',
-      step: '0.01',
-    },
-    {
-      id: 'odds',
-      label: 'Decimal Odds',
-      placeholder: '2.00',
-      hint: 'e.g. 1.85, 2.50, 3.00',
-      step: '0.01',
-    },
-    {
-      id: 'targetProfit',
-      label: 'Target Profit',
-      placeholder: '100.00',
-      hint: 'Fixed profit per recovery',
-      step: '0.01',
-    },
-    {
-      id: 'maxAttempts',
-      label: 'Max Attempts',
-      placeholder: '10',
-      hint: 'Between 1 and 50',
-      step: '1',
-    },
-  ] as const
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.4 }}
+      className="glass rounded-2xl border border-white/8 overflow-hidden shadow-card"
     >
-      <Card className="border-border/50">
-        <CardHeader className="pb-4">
-          <div className="flex items-center gap-2">
-            <CalcIcon className="h-5 w-5 text-primary" />
-            <CardTitle className="text-lg">Calculator</CardTitle>
+      {/* Header */}
+      <div className="px-6 py-5 border-b border-white/5">
+        <div className="flex items-center gap-2.5 mb-1">
+          <div className="w-7 h-7 rounded-lg bg-gradient-gold flex items-center justify-center">
+            <Zap className="h-3.5 w-3.5 text-black" />
           </div>
-          <CardDescription>
-            Formula: Next Stake = (Losses + Target) / (Odds − 1)
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            {fields.map(field => (
-              <div key={field.id} className="space-y-1.5">
-                <Label htmlFor={field.id} className="text-sm font-medium">
-                  {field.label}
-                </Label>
-                <Input
+          <h2 className="text-sm font-bold text-white">Calculator</h2>
+        </div>
+        <p className="text-xs text-white/30 font-mono pl-9">
+          (Losses + Profit) / (Odds − 1)
+        </p>
+      </div>
+
+      {/* Form */}
+      <div className="p-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {FIELDS.map(field => (
+            <div key={field.id}>
+              <Label htmlFor={field.id} className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5 block">
+                {field.label}
+              </Label>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-xs font-bold text-amber-400/60 w-4 text-center select-none">
+                  {field.icon}
+                </span>
+                <input
                   id={field.id}
                   type="number"
                   placeholder={field.placeholder}
                   step={field.step}
-                  className={errors[field.id] ? 'border-destructive' : ''}
+                  className={`w-full h-11 pl-9 pr-3 rounded-xl text-sm font-medium tabular-nums bg-white/5 border transition-all outline-none text-white placeholder:text-white/20
+                    ${errors[field.id]
+                      ? 'border-red-500/50 focus:border-red-500 focus:shadow-[0_0_0_2px_rgba(239,68,68,0.1)]'
+                      : 'border-white/10 focus:border-amber-500/50 focus:shadow-[0_0_0_2px_rgba(245,158,11,0.08)] focus:bg-amber-500/5'
+                    }`}
                   {...register(field.id, { valueAsNumber: true })}
                 />
-                {errors[field.id] ? (
-                  <p className="text-xs text-destructive">{errors[field.id]?.message}</p>
-                ) : (
-                  <p className="text-xs text-muted-foreground">{field.hint}</p>
-                )}
               </div>
-            ))}
-
-            <div className="flex gap-2 pt-2">
-              <Button type="submit" className="flex-1" disabled={isCalculating}>
-                {isCalculating ? 'Calculating...' : 'Calculate'}
-              </Button>
-              <Button type="button" variant="outline" size="icon" onClick={handleReset}>
-                <RotateCcw className="h-4 w-4" />
-              </Button>
+              <p className={`text-[11px] mt-1 ${errors[field.id] ? 'text-red-400' : 'text-white/25'}`}>
+                {errors[field.id]?.message ?? field.hint}
+              </p>
             </div>
-          </form>
-        </CardContent>
-      </Card>
+          ))}
+
+          <div className="flex gap-2 pt-2">
+            <motion.button
+              type="submit"
+              disabled={isCalculating}
+              whileHover={{ scale: 1.01, boxShadow: '0 0 30px rgba(245,158,11,0.4)' }}
+              whileTap={{ scale: 0.98 }}
+              className="flex-1 h-11 btn-shimmer text-black font-black text-sm rounded-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-gold"
+            >
+              {isCalculating ? (
+                <span className="animate-pulse">Calculating...</span>
+              ) : (
+                <>
+                  <Zap className="h-3.5 w-3.5" />
+                  Calculate
+                </>
+              )}
+            </motion.button>
+            <button
+              type="button"
+              onClick={handleReset}
+              className="h-11 w-11 rounded-xl border border-white/10 bg-white/5 text-white/40 hover:text-white/70 hover:border-white/20 transition-all flex items-center justify-center"
+            >
+              <RotateCcw className="h-4 w-4" />
+            </button>
+          </div>
+        </form>
+      </div>
     </motion.div>
   )
 }

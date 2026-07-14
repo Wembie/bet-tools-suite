@@ -6,16 +6,19 @@ interface AlertsProps {
   alerts: AlertInfo[]
 }
 
-const ICON_MAP = {
-  warning: <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0 mt-0.5" />,
-  error: <XCircle className="h-4 w-4 text-destructive shrink-0 mt-0.5" />,
-  info: <Info className="h-4 w-4 text-blue-500 shrink-0 mt-0.5" />,
-}
-
-const STYLE_MAP = {
-  warning: 'bg-amber-500/10 border-amber-500/30 text-amber-200',
-  error: 'bg-destructive/10 border-destructive/30 text-red-300',
-  info: 'bg-blue-500/10 border-blue-500/30 text-blue-300',
+const CONFIG = {
+  warning: {
+    icon: <AlertTriangle className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />,
+    cls: 'bg-amber-500/8 border-amber-500/25 text-amber-200/80',
+  },
+  error: {
+    icon: <XCircle className="h-4 w-4 text-red-400 shrink-0 mt-0.5" />,
+    cls: 'bg-red-500/8 border-red-500/25 text-red-200/80',
+  },
+  info: {
+    icon: <Info className="h-4 w-4 text-blue-400 shrink-0 mt-0.5" />,
+    cls: 'bg-blue-500/8 border-blue-500/25 text-blue-200/80',
+  },
 }
 
 export function Alerts({ alerts }: AlertsProps) {
@@ -35,10 +38,10 @@ export function Alerts({ alerts }: AlertsProps) {
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.05 }}
-            className={`flex items-start gap-2 p-3 rounded-lg border text-sm ${STYLE_MAP[alert.type]}`}
+            className={`flex items-start gap-2.5 p-3 rounded-xl border text-xs leading-relaxed ${CONFIG[alert.type].cls}`}
           >
-            {ICON_MAP[alert.type]}
-            <p className="flex-1 leading-relaxed">{alert.message}</p>
+            {CONFIG[alert.type].icon}
+            <p>{alert.message}</p>
           </motion.div>
         ))}
       </motion.div>

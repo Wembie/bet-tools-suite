@@ -158,6 +158,117 @@
     height: 1px;
     background: linear-gradient(90deg, transparent, rgba(245, 158, 11, 0.4), transparent);
   }
+
+  /* Neon text glows */
+  .neon-gold {
+    text-shadow:
+      0 0 12px rgba(245, 158, 11, 0.7),
+      0 0 35px rgba(245, 158, 11, 0.4),
+      0 0 80px rgba(245, 158, 11, 0.15);
+  }
+
+  .neon-purple {
+    text-shadow:
+      0 0 12px rgba(168, 85, 247, 0.7),
+      0 0 35px rgba(168, 85, 247, 0.4),
+      0 0 80px rgba(168, 85, 247, 0.15);
+  }
+
+  .neon-green {
+    text-shadow:
+      0 0 10px rgba(16, 185, 129, 0.7),
+      0 0 30px rgba(16, 185, 129, 0.4);
+  }
+
+  /* Grid overlay background */
+  .grid-overlay {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  /* Odds cell — interactive odds board buttons */
+  .odds-cell {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-variant-numeric: tabular-nums;
+    transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, color 0.2s;
+    min-width: 64px;
+    text-align: center;
+    cursor: default;
+  }
+
+  .odds-cell:hover {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.4);
+    box-shadow: 0 0 18px rgba(245, 158, 11, 0.2);
+  }
+
+  .odds-cell-active {
+    background: rgba(245, 158, 11, 0.14);
+    border-color: rgba(245, 158, 11, 0.4);
+    box-shadow: 0 0 14px rgba(245, 158, 11, 0.25);
+  }
+
+  /* Holographic animated border wrapper */
+  .holo-wrap {
+    position: relative;
+    padding: 1px;
+    border-radius: inherit;
+  }
+
+  .holo-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(135deg, #f59e0b, #a855f7, #10b981, #3b82f6, #f59e0b);
+    background-size: 300% 300%;
+    animation: gradient-border 3s ease infinite;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 0;
+  }
+
+  .holo-wrap:hover::before {
+    opacity: 0.85;
+  }
+
+  /* Sport badge pill */
+  .sport-pill {
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 10px;
+    font-weight: 600;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    cursor: default;
+    white-space: nowrap;
+  }
+
+  .sport-pill:hover {
+    border-color: rgba(245, 158, 11, 0.3);
+    color: rgba(251, 191, 36, 0.65);
+    background: rgba(245, 158, 11, 0.05);
+  }
+
+  /* Premium input style override */
+  .input-premium {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
+  }
+
+  .input-premium:focus {
+    border-color: rgba(245, 158, 11, 0.35) !important;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.08) !important;
+    background: rgba(245, 158, 11, 0.03) !important;
+  }
 }
 
 /* Scrollbar */

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useTranslation } from 'react-i18next'
 import { Header } from '@/components/Header'
 import { StaircaseCalculator } from '@/components/StaircaseCalculator'
 import { StaircaseDashboard } from '@/components/StaircaseDashboard'
@@ -22,6 +23,7 @@ const TABS: { id: Tab; label: string }[] = [
 ]
 
 export function EscaleraPage({ settings, onBack, onThemeToggle, onSettingsOpen }: EscaleraPageProps) {
+  const { t } = useTranslation()
   const [tab, setTab] = useState<Tab>('calculator')
   const { result, isCalculating, calculate, reset } = useStaircase()
 
@@ -33,11 +35,14 @@ export function EscaleraPage({ settings, onBack, onThemeToggle, onSettingsOpen }
   }
 
   return (
-    <div className="min-h-screen bg-[#06060f]">
+    <div className="min-h-screen bg-[#04040c]">
+      {/* Grid overlay */}
+      <div className="fixed inset-0 grid-overlay pointer-events-none z-0" />
       {/* Background mesh */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-700/5 rounded-full blur-[120px]" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-amber-500/4 rounded-full blur-[100px]" />
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute top-0 right-1/3 w-[500px] h-[500px] bg-purple-700/6 rounded-full blur-[160px]" />
+        <div className="absolute bottom-0 left-1/4 w-[400px] h-[400px] bg-violet-600/5 rounded-full blur-[140px]" />
+        <div className="absolute top-1/2 right-0 w-[300px] h-[300px] bg-purple-500/3 rounded-full blur-[100px]" />
       </div>
 
       <Header
@@ -103,14 +108,17 @@ export function EscaleraPage({ settings, onBack, onThemeToggle, onSettingsOpen }
                       animate={{ opacity: 1 }}
                       className="flex flex-col items-center justify-center py-24 text-center"
                     >
-                      <div className="w-16 h-16 rounded-2xl glass border border-purple-500/20 bg-purple-500/8 flex items-center justify-center mb-5 animate-pulse">
-                        <svg className="w-7 h-7 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 13l4-4 4 4 4-8 4 4" />
-                        </svg>
+                      <div className="relative w-20 h-20 mb-6">
+                        <div className="absolute inset-0 rounded-2xl bg-purple-500/8 border border-purple-500/22 animate-pulse" />
+                        <div className="absolute inset-0 rounded-2xl flex items-center justify-center">
+                          <svg className="w-9 h-9 text-purple-400/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 13l4-4 4 4 4-8 4 4" />
+                          </svg>
+                        </div>
                       </div>
-                      <h2 className="text-lg font-bold text-white mb-2">Lista para escalar</h2>
-                      <p className="text-sm text-white/30 max-w-xs leading-relaxed">
-                        Ingresa tu monto inicial, cuota y número de apuestas para ver el plan completo.
+                      <h2 className="text-lg font-bold text-white mb-2">{t('escalera.emptyTitle')}</h2>
+                      <p className="text-sm text-white/28 max-w-xs leading-relaxed">
+                        {t('escalera.emptyHint')}
                       </p>
                     </motion.div>
                   ) : (
@@ -148,14 +156,17 @@ export function EscaleraPage({ settings, onBack, onThemeToggle, onSettingsOpen }
                   animate={{ opacity: 1 }}
                   className="flex flex-col items-center justify-center py-24 text-center"
                 >
-                  <div className="w-16 h-16 rounded-2xl glass border border-purple-500/20 bg-purple-500/8 flex items-center justify-center mb-5">
-                    <svg className="w-7 h-7 text-purple-400/50" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 13l4-4 4 4 4-8 4 4" />
-                    </svg>
+                  <div className="relative w-20 h-20 mb-6">
+                    <div className="absolute inset-0 rounded-2xl bg-purple-500/5 border border-purple-500/15" />
+                    <div className="absolute inset-0 rounded-2xl flex items-center justify-center">
+                      <svg className="w-9 h-9 text-purple-400/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 13l4-4 4 4 4-8 4 4" />
+                      </svg>
+                    </div>
                   </div>
-                  <h2 className="text-lg font-bold text-white/50 mb-2">Sin resultados</h2>
+                  <h2 className="text-lg font-bold text-white/45 mb-2">{t('escalera.emptyResultsTitle')}</h2>
                   <p className="text-sm text-white/20 max-w-xs leading-relaxed">
-                    Vuelve a la calculadora e ingresa tus parámetros para generar el plan.
+                    {t('escalera.emptyResultsHint')}
                   </p>
                 </motion.div>
               )}

@@ -94,3 +94,29 @@ export interface StaircaseResult {
   totalProfit: number
   totalGrowthPercent: number
 }
+
+export interface RuinInputs {
+  bankroll: number
+  stake: number
+  odds: number
+  winRate: number
+}
+
+export interface RuinPoint {
+  bets: number
+  survivalProbability: number
+}
+
+export interface RuinResult {
+  bankroll: number
+  stake: number
+  odds: number
+  winRate: number
+  maxConsecutiveLosses: number
+  breakEvenWinRate: number
+  evPerBetPct: number
+  kellyFraction: number
+  kellyStake: number
+  ruinProbability: number
+  survivalCurve: RuinPoint[]
+}

@@ -3,10 +3,11 @@ import { AnimatePresence } from 'framer-motion'
 import { Landing } from '@/pages/Landing'
 import { RecoveryPage } from '@/pages/RecoveryPage'
 import { EscaleraPage } from '@/pages/EscaleraPage'
+import { RuinPage } from '@/pages/RuinPage'
 import { Settings } from '@/components/Settings'
 import { useSettings } from '@/hooks/useSettings'
 
-type Mode = 'landing' | 'recovery' | 'escalera'
+type Mode = 'landing' | 'recovery' | 'escalera' | 'ruin'
 
 export function Home() {
   const { settings, updateSettings } = useSettings()
@@ -33,6 +34,15 @@ export function Home() {
         {mode === 'escalera' && (
           <EscaleraPage
             key="escalera"
+            settings={settings}
+            onBack={() => setMode('landing')}
+            onThemeToggle={themeToggle}
+            onSettingsOpen={() => setShowSettings(true)}
+          />
+        )}
+        {mode === 'ruin' && (
+          <RuinPage
+            key="ruin"
             settings={settings}
             onBack={() => setMode('landing')}
             onThemeToggle={themeToggle}

@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.7] - 2026-07-15
+
+### Added
+- **Ruin Calculator** — new third tool: bankroll ruin probability analysis
+  - Inputs: bankroll, stake per bet, decimal odds, estimated win rate %
+  - Outputs: ruin probability (Cramér-Lundberg exponential approximation), max consecutive losses, break-even win rate, EV per bet, Kelly criterion stake recommendation
+  - Survival curve chart via Recharts AreaChart showing P(bankroll > 0) over N bets (reflection-principle approximation)
+  - Edge indicator banner (positive / negative EV warning)
+  - Color-coded metrics: red for high ruin risk, green for positive edge, amber for losses
+  - `src/utils/ruin.ts` — pure math: `normCDF`, `calculateRuin`
+  - `src/hooks/useRuin.ts`
+  - `src/components/RuinCalculator.tsx`, `RuinDashboard.tsx`, `RuinChart.tsx`
+  - `src/pages/RuinPage.tsx` with Calculator / Results tabs
+- `src/types/index.ts`: `RuinInputs`, `RuinResult`, `RuinPoint`
+- i18n: `ruin.*` namespace in `en.json` and `es.json`
+- Validation keys: `maxWinRate`, `stakeExceedsBankroll` in both locales
+
+### Changed
+- `Landing.tsx`: added third Ruin card (red/orange theme), grid expanded to `lg:grid-cols-3`
+- `Home.tsx`: `Mode` union extended to include `'ruin'`, `RuinPage` wired in
+
 ## [1.0.6] - 2026-07-14
 
 ### Changed

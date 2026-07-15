@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion'
-import { Shield, Layers, Zap, Activity, TrendingUp } from 'lucide-react'
+import { Shield, Layers, Zap, Activity, TrendingUp, TrendingDown } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 
 interface LandingProps {
-  onSelectMode: (mode: 'recovery' | 'escalera') => void
+  onSelectMode: (mode: 'recovery' | 'escalera' | 'ruin') => void
 }
 
 // ── Live sports ticker ──────────────────────────────────────────────────────
@@ -107,6 +107,13 @@ export function Landing({ onSelectMode }: LandingProps) {
     t('landing.escF2'),
     t('landing.escF3'),
     t('landing.escF4'),
+  ]
+
+  const ruinFeatures = [
+    t('landing.ruinF1'),
+    t('landing.ruinF2'),
+    t('landing.ruinF3'),
+    t('landing.ruinF4'),
   ]
 
   return (
@@ -327,7 +334,7 @@ export function Landing({ onSelectMode }: LandingProps) {
         </motion.div>
 
         {/* ════ MODE CARDS ════ */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full max-w-3xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full max-w-5xl">
 
           {/* ── Recovery Card ── */}
           <motion.div
@@ -525,6 +532,93 @@ export function Landing({ onSelectMode }: LandingProps) {
                   <div className="h-11 rounded-xl bg-gradient-to-r from-purple-600 to-violet-500 flex items-center justify-center gap-2 text-white font-black text-sm shadow-[0_4px_20px_rgba(168,85,247,0.3)] group-hover:shadow-[0_4px_32px_rgba(168,85,247,0.55)] transition-all duration-300">
                     <Layers className="h-4 w-4" />
                     {t('landing.escEnter')}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* ── Ruin Card ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, delay: 0.52 }}
+            whileHover={{ y: -10, scale: 1.016 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => onSelectMode('ruin')}
+            className="group cursor-pointer"
+          >
+            {/* Gradient border wrapper */}
+            <div className="relative rounded-2xl p-[1px] transition-all duration-500"
+              style={{ background: 'linear-gradient(135deg, rgba(239,68,68,0.22), rgba(239,68,68,0.06), transparent)' }}
+              onMouseEnter={e => {
+                (e.currentTarget as HTMLDivElement).style.background =
+                  'linear-gradient(135deg, rgba(239,68,68,0.75), rgba(249,115,22,0.35), rgba(239,68,68,0.4))'
+              }}
+              onMouseLeave={e => {
+                (e.currentTarget as HTMLDivElement).style.background =
+                  'linear-gradient(135deg, rgba(239,68,68,0.22), rgba(239,68,68,0.06), transparent)'
+              }}
+            >
+              <div className="relative rounded-[15px] bg-gradient-to-br from-red-500/10 via-[#0c0c1e] to-[#080815] overflow-hidden h-full">
+                <div className="absolute top-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-red-400/55 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/[0.03] to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-br from-red-500/0 to-red-500/0 group-hover:from-red-500/6 group-hover:to-transparent transition-all duration-500 pointer-events-none" />
+
+                <div className="relative p-7 md:p-8">
+                  <div className="flex items-center gap-2 mb-5">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-red-500/10 border border-red-500/22 text-red-400/75 text-[9px] font-black uppercase tracking-widest">
+                      {t('landing.ruinBadge')}
+                    </span>
+                  </div>
+
+                  <div className="relative w-14 h-14 mb-4">
+                    <div className="absolute inset-0 rounded-2xl bg-red-500/8 border border-red-500/18 group-hover:shadow-[0_0_30px_rgba(239,68,68,0.35)] transition-all duration-400" />
+                    <div className="relative h-full flex items-center justify-center">
+                      <TrendingDown className="h-7 w-7 text-red-400" />
+                    </div>
+                  </div>
+
+                  <h2 className="text-2xl md:text-3xl font-black text-white leading-tight mb-3">
+                    {t('landing.ruinTag1')}<br />
+                    <span className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
+                      {t('landing.ruinTag2')}
+                    </span>
+                  </h2>
+
+                  <p className="text-white/33 text-xs md:text-sm leading-relaxed mb-5">
+                    {t('landing.ruinDesc')}
+                  </p>
+
+                  <ul className="space-y-2 mb-6">
+                    {ruinFeatures.map(f => (
+                      <li key={f} className="flex items-center gap-2.5 text-[11px] text-white/45">
+                        <span className="w-1 h-1 rounded-full bg-red-400/60 shrink-0 group-hover:bg-red-400 transition-colors duration-300" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="flex items-center gap-4 mb-6 pb-6 border-b border-white/[0.04]">
+                    <div className="text-center">
+                      <div className="text-red-400 text-base font-black tabular-nums">σ²</div>
+                      <div className="text-white/20 text-[8px] uppercase tracking-wider">variance</div>
+                    </div>
+                    <div className="h-6 w-px bg-white/[0.06]" />
+                    <div className="text-center">
+                      <div className="text-white/60 text-base font-black">Kelly</div>
+                      <div className="text-white/20 text-[8px] uppercase tracking-wider">sizing</div>
+                    </div>
+                    <div className="h-6 w-px bg-white/[0.06]" />
+                    <div className="text-center">
+                      <div className="text-white/60 text-base font-black">EV</div>
+                      <div className="text-white/20 text-[8px] uppercase tracking-wider">edge</div>
+                    </div>
+                  </div>
+
+                  <div className="h-11 rounded-xl bg-gradient-to-r from-red-600 to-orange-500 flex items-center justify-center gap-2 text-white font-black text-sm shadow-[0_4px_20px_rgba(239,68,68,0.3)] group-hover:shadow-[0_4px_32px_rgba(239,68,68,0.55)] transition-all duration-300">
+                    <TrendingDown className="h-4 w-4" />
+                    {t('landing.ruinEnter')}
                   </div>
                 </div>
               </div>

@@ -49,14 +49,13 @@ export function calculateRuin(inputs: RuinInputs): RuinResult {
   const survivalCurve: RuinPoint[] = []
 
   for (let n = step; n <= maxBets; n += step) {
-    let survivalProb: number
     const sqrtN = Math.sqrt(n)
     const term1 = normCDF((N + n * mu) / (sigma * sqrtN))
     const reflectionFactor = mu > 0
       ? Math.exp(-2 * mu * N / sigma2)
-      : Math.exp(2 * Math.abs(mu) * N / sigma2)   // large but capped
+      : Math.exp(2 * Math.abs(mu) * N / sigma2)
     const term2 = Math.min(1e10, reflectionFactor) * normCDF((-N + n * mu) / (sigma * sqrtN))
-    survivalProb = Math.max(0, Math.min(1, term1 - term2))
+    const survivalProb = Math.max(0, Math.min(1, term1 - term2))
     survivalCurve.push({ bets: n, survivalProbability: Number((survivalProb * 100).toFixed(2)) })
   }
 

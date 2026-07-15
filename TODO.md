@@ -1,14 +1,7 @@
 # TODO — Pending Calculator Modes
 
-## Ruina (Bankroll Ruin Calculator)
-Given a fixed stake and bankroll, calculate:
-- How many consecutive losses before going broke
-- Probability of ruin at different win rates
-- Break-even win rate for given odds
-- Expected number of bets until ruin
-
-**Inputs:** bankroll, stake per bet, odds, win rate %
-**Outputs:** bets until ruin, ruin probability, survival curve chart
+## ~~Ruina (Bankroll Ruin Calculator)~~ ✅ done in v1.0.7
+~~Given a fixed stake and bankroll, calculate how many consecutive losses before going broke, ruin probability, break-even win rate, Kelly stake, survival curve chart.~~
 
 ---
 
